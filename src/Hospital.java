@@ -6,6 +6,7 @@ import java.util.List;
  * @Description: TODO
  * @author: Bruce Young
  * @date: 2020年02月02日 20:58
+ * @annotation:wihenne
  */
 public class Hospital {
 
@@ -37,28 +38,30 @@ public class Hospital {
     public static Hospital getInstance(){
         return hospital;
     }
-    private Point point = new Point(800,100);
-    private List<Bed> beds = new ArrayList<>();
+    private Point point = new Point(800,100);   //隔离区矩型框的起始位置
+    private List<Bed> beds = new ArrayList<>();         //床位
 
     private Hospital() {
+        //医院床位为0时
         if(Constants.BED_COUNT==0){
             width=0;
             height=0;
         }
-        int column = Constants.BED_COUNT/100;
-        width = column*6;
+        int column = Constants.BED_COUNT/100;   //矩型框一行的个数（矩型框里面的红点表示隔离区占用床位的个数）
 
+        width = column*6;   //隔离区矩行框宽度
+
+        //隔离区红点
         for(int i=0;i<column;i++){
-
             for(int j=10;j<=610;j+=6){
                 Bed bed = new Bed(point.getX()+i*6,point.getY()+j);
                 beds.add(bed);
-
             }
 
         }
     }
 
+    //判断隔离区是否有空床位
     public Bed pickBed(){
         for(Bed bed:beds){
             if(bed.isEmpty()){

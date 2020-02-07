@@ -7,9 +7,8 @@ import java.util.Random;
 public class Main {
 
 
-
-
     public static void main(String[] args) {
+
         MyPanel p = new MyPanel();
         Thread panelThread = new Thread(p);
         JFrame frame = new JFrame();
@@ -24,13 +23,12 @@ public class Main {
         for(int i=0;i<Constants.ORIGINAL_COUNT;i++){
             int index = new Random().nextInt(people.size()-1);
             Person person = people.get(index);
-
+            //初始感染的人去感染附近的人
             while (person.isInfected()){
                 index = new Random().nextInt(people.size()-1);
                 person = people.get(index);
             }
             person.beInfected();
-
         }
 
 

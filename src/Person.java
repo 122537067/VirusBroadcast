@@ -20,24 +20,28 @@ public class Person {
     double targetSig=50;
 
 
+    //群众状态
     public interface State{
         int NORMAL = 0;
-        int SUSPECTED = NORMAL+1;
+        int SUSPECTED = NORMAL+1;   //疑似
         int SHADOW = SUSPECTED+1;
 
-        int CONFIRMED = SHADOW+1;
+        int CONFIRMED = SHADOW+1;   //确诊
         int FREEZE = CONFIRMED+1;
-        int CURED = FREEZE+1;
+        int CURED = FREEZE+1;       //治愈
     }
 
     public Person(City city, int x, int y) {
         this.city = city;
         this.x = x;
         this.y = y;
+        //群众人口呈现高斯分布
         targetXU = 100*new Random().nextGaussian()+x;
         targetYU = 100*new Random().nextGaussian()+y;
 
     }
+
+    //流动值
     public boolean wantMove(){
         double value = sig*new Random().nextGaussian()+Constants.u;
         return value>0;
@@ -68,11 +72,12 @@ public class Person {
     public void setY(int y) {
         this.y = y;
     }
-    int infectedTime=0;
-    int confirmedTime=0;
+    int infectedTime=0;     //感染时间
+    int confirmedTime=0;    //确诊时间
     public boolean isInfected(){
         return state>=State.SHADOW;
-    }
+    }   //判断是否感染
+    //被感染
     public void beInfected(){
         state = State.SHADOW;
         infectedTime=MyPanel.worldTime;
@@ -85,6 +90,8 @@ public class Person {
     private void freezy(){
         state = State.FREEZE;
     }
+
+    //人口移动
     private void moveTo(int x,int y){
         this.x+=x;
         this.y+=y;
@@ -152,6 +159,7 @@ public class Person {
             return;
         }
         if(state==State.CONFIRMED&&MyPanel.worldTime-confirmedTime>=Constants.HOSPITAL_RECEIVE_TIME){
+            //如果已经确诊
             Bed bed = Hospital.getInstance().pickBed();
             if(bed==null){
                 System.out.println("隔离区没有空床位");
@@ -163,8 +171,10 @@ public class Person {
             }
         }
         if(MyPanel.worldTime-infectedTime>Constants.SHADOW_TIME&&state==State.SHADOW){
+            //确诊
             state=State.CONFIRMED;
             confirmedTime = MyPanel.worldTime;
+            System.out.println("新增1人感染");
         }
 
         action();

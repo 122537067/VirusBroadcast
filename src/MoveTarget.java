@@ -3,7 +3,9 @@
  * @Description: TODO
  * @author: Bruce Young
  * @date: 2020年02月02日 17:47
+ *  @annotation:wihenne
  */
+//人口移动位置
 public class MoveTarget {
     private int x;
     private int y;
